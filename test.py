@@ -1,5 +1,5 @@
 print("Hello")
 
-	inut('Check')
+inut('Check')
 
 print(""")
