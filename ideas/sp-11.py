@@ -154,7 +154,7 @@ class Dastan:
 				StartSquareReference = self.__GetSquareReference("containing the piece to move")
 				SquareIsValid = self.__CheckSquareIsValid(StartSquareReference, True)
 
-			checkedBoard = copy.deepcopy(self._Board)
+			checkedBoard = copy.deepcopy(self._Board)	
 
 			for rowNum in range(1,7):
 				for columnNum in range(1,7):

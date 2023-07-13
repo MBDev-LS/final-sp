@@ -438,7 +438,7 @@ class MoveOptionQueue:
 
 class Player:
 	def __init__(self, N, D):
-		self.__Score = 100
+		self.__Score = 10
 		self.__Name = N
 		self.__Direction = D
 		self.__Queue = MoveOptionQueue()

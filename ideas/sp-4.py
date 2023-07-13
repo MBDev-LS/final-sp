@@ -187,14 +187,19 @@ class Dastan:
 				self._Board.append(S)
 
 	def __CreatePieces(self, NoOfPieces):
-		for Count in range(1, NoOfPieces + 1):
+		start = self._NoOfColumns // 2 - NoOfPieces // 2
+		end = start+4
+		for Count in range(start, end):
 			CurrentPiece = Piece("piece", self._Players[0], 1, "!")
 			self._Board[self.__GetIndexOfSquare(2 * 10 + Count + 1)].SetPiece(CurrentPiece)
+
 		CurrentPiece = Piece("mirza", self._Players[0], 5, "1")
 		self._Board[self.__GetIndexOfSquare(10 + self._NoOfColumns // 2)].SetPiece(CurrentPiece)
-		for Count in range(1, NoOfPieces + 1):
+
+		for Count in range(start, end):
 			CurrentPiece = Piece("piece", self._Players[1], 1, '"')
 			self._Board[self.__GetIndexOfSquare((self._NoOfRows - 1) * 10 + Count + 1)].SetPiece(CurrentPiece)
+		
 		CurrentPiece = Piece("mirza", self._Players[1], 5, "2")
 		self._Board[self.__GetIndexOfSquare(self._NoOfRows * 10 + (self._NoOfColumns // 2 + 1))].SetPiece(CurrentPiece)
 

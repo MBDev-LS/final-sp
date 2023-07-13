@@ -4,7 +4,12 @@
 # developed in the Python 3.9 programming environment
 
 # Converted indentation to tabs - Louis (04/11/2022)
-# Idea: Straight Line Rook - Add a move option for moving in a straight line until the piece hits something (if it hits an opponent's piece then it takes it)
+
+# Idea: Straight Line Rook - Add a move option for 
+# moving in a straight line until the piece hits
+# something (if it hits an opponent's piece then it
+# takes it)
+
 # Author: Louis
 
 import random
@@ -275,9 +280,17 @@ class Dastan:
 		NewMove = Move(0, -2 * Direction)
 		NewMoveOption.AddToPossibleMoves(NewMove)
 		return NewMoveOption
+	
+	def __CreateRookMoveOption(self, direction):
+		NewMoveOption = MoveOption("rook")
+
+		# Needs to be called each time the
+		# rook move option is used.
 
 	def __CreateMoveOption(self, Name, Direction):
-		if Name == "chowkidar":
+		if Name == "rook":
+			return self.__CreateRookMoveOption(Direction)
+		elif Name == "chowkidar":
 			return self.__CreateChowkidarMoveOption(Direction)
 		elif Name == "ryott":
 			return self.__CreateRyottMoveOption(Direction)
@@ -294,11 +307,17 @@ class Dastan:
 		self._Players[0].AddToMoveOptionQueue(self.__CreateMoveOption("cuirassier", 1))
 		self._Players[0].AddToMoveOptionQueue(self.__CreateMoveOption("faujdar", 1))
 		self._Players[0].AddToMoveOptionQueue(self.__CreateMoveOption("jazair", 1))
+
+		self._Players[0].AddToMoveOptionQueue(self.__CreateMoveOption("rook", 1))
+
+
 		self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("ryott", -1))
 		self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("chowkidar", -1))
 		self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("jazair", -1))
 		self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("faujdar", -1))
 		self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("cuirassier", -1))
+
+		self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("rook", -1))
 
 class Piece:
 	def __init__(self, T, B, P, S):
