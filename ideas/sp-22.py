@@ -4,8 +4,13 @@
 # developed in the Python 3.9 programming environment
 
 # Converted indentation to tabs - Louis (04/11/2022)
-# Idea: Only allow the player to take the offer if they have enough points.
-# Author: Damian
+
+# Idea: Straight Line Rook - Add a move option for 
+# moving in a straight line until the piece hits
+# something (if it hits an opponent's piece then it
+# takes it)
+
+# Author: Louis
 
 import random
 
@@ -112,15 +117,9 @@ class Dastan:
 		return SelectedSquare
 
 	def __UseMoveOptionOffer(self):
-		while True:
-			ReplaceChoice = int(input("Choose the move option from your queue to replace (1 to 5): "))
-			price = 10 - (ReplaceChoice * 2)
-			if price > self._CurrentPlayer.GetScore():
-				print("You cannot afford to put your move option here. Try a cheaper position in the queue (further down the queue).")
-			else:
-				break
+		ReplaceChoice = int(input("Choose the move option from your queue to replace (1 to 5): "))
 		self._CurrentPlayer.UpdateMoveOptionQueueWithOffer(ReplaceChoice - 1, self.__CreateMoveOption(self._MoveOptionOffer[self._MoveOptionOfferPosition], self._CurrentPlayer.GetDirection()))
-		self._CurrentPlayer.ChangeScore(-price)
+		self._CurrentPlayer.ChangeScore(-(10 - (ReplaceChoice * 2)))
 		self._MoveOptionOfferPosition = random.randint(0, 4)
 
 	def __GetPointsForOccupancyByPlayer(self, CurrentPlayer):
@@ -144,7 +143,6 @@ class Dastan:
 			SquareIsValid = False
 			Choice = 0
 			while Choice < 1 or Choice > 3:
-				#if self._CurrentPlayer.GetScore()
 				Choice = int(input("Choose move option to use from queue (1 to 3) or 9 to take the offer: "))
 				if Choice == 9:
 					self.__UseMoveOptionOffer()
@@ -282,9 +280,17 @@ class Dastan:
 		NewMove = Move(0, -2 * Direction)
 		NewMoveOption.AddToPossibleMoves(NewMove)
 		return NewMoveOption
+	
+	def __CreateRookMoveOption(self, direction):
+		NewMoveOption = MoveOption("rook")
+
+		# Needs to be called each time the
+		# rook move option is used.
 
 	def __CreateMoveOption(self, Name, Direction):
-		if Name == "chowkidar":
+		if Name == "rook":
+			return self.__CreateRookMoveOption(Direction)
+		elif Name == "chowkidar":
 			return self.__CreateChowkidarMoveOption(Direction)
 		elif Name == "ryott":
 			return self.__CreateRyottMoveOption(Direction)
@@ -301,11 +307,17 @@ class Dastan:
 		self._Players[0].AddToMoveOptionQueue(self.__CreateMoveOption("cuirassier", 1))
 		self._Players[0].AddToMoveOptionQueue(self.__CreateMoveOption("faujdar", 1))
 		self._Players[0].AddToMoveOptionQueue(self.__CreateMoveOption("jazair", 1))
+
+		self._Players[0].AddToMoveOptionQueue(self.__CreateMoveOption("rook", 1))
+
+
 		self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("ryott", -1))
 		self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("chowkidar", -1))
 		self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("jazair", -1))
 		self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("faujdar", -1))
 		self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("cuirassier", -1))
+
+		self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("rook", -1))
 
 class Piece:
 	def __init__(self, T, B, P, S):
@@ -438,7 +450,7 @@ class MoveOptionQueue:
 
 class Player:
 	def __init__(self, N, D):
-		self.__Score = 10
+		self.__Score = 100
 		self.__Name = N
 		self.__Direction = D
 		self.__Queue = MoveOptionQueue()
